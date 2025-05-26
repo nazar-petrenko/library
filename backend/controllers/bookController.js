@@ -64,6 +64,8 @@ exports.searchBooks = async (req, res) => {
 };
 
 exports.addToLibrary = (req, res) => {
+  console.log('user:', req.user);
+  console.log('body:', req.body);
   const userId = req.user.id;
   const { bookId } = req.body;
 

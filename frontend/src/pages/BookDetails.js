@@ -12,14 +12,18 @@ const BookDetails = () => {
   
   useEffect(() => {
     axios.get(`/api/books/${id}`)
-      .then(res => setBook(res.data))
-      .catch(err => console.error(err));
+      .then(res => {setBook(res.data);
+      console.log('Book from backend:', res.data);})
+      .catch(err => console.error(err));    
   }, [id]);
 
 const handleAddToLibrary = async (bookId) => {
+  console.log('bookId to send:', bookId);
   try {
     await axios.post('/api/books/add-to-library', { bookId }, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` ,
+    'Content-Type': 'application/json', }
+      
     });
     alert('Книгу додано!');
   } catch (err) {
@@ -38,7 +42,7 @@ const handleAddToLibrary = async (bookId) => {
         <img src={book.cover_url} alt={book.title} style={{ maxWidth: '200px' }} />
         <p className="mt-3"><strong>Опис:</strong> {book.description}</p>
         {user ? (
-          <button onClick={() => handleAddToLibrary(book.book_id)} className="btn btn-success mt-2 rounded-pill">
+          <button onClick={() => handleAddToLibrary(book.id)} className="btn btn-success mt-2 rounded-pill">
             Додати до бібліотеки
           </button>
         ) : null}
